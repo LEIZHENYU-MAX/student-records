@@ -1,5 +1,3 @@
-
-
 <form method="GET" action="/students" style="margin:10px 0">
   <input name="name" placeholder="Search by name" value="<%= keyword || '' %>" />
   <button type="submit">Search</button>
@@ -8,7 +6,12 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th><th>Name</th><th>Major</th><th>GPA</th><th>Action</th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Age</th>    
+      <th>Major</th>
+      <th>GPA</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +19,7 @@
       <tr>
         <td><%= s.studentID %></td>
         <td><%= s.name %></td>
+        <td><%= s.age %></td>    
         <td><%= s.major %></td>
         <td><%= s.gpa %></td>
         <td>

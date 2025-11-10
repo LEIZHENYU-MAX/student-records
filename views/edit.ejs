@@ -4,18 +4,24 @@
   <label>ID
     <input name="studentID" value="<%= student.studentID %>" required />
   </label>
+
   <label>Name
     <input name="name" value="<%= student.name %>" required />
   </label>
+
   <label>Age
-    <input name="age" type="number" value="<%= student.age %>" />
+    <input name="age" type="number" value="<%= student.age %>" min="0" max="120" />
   </label>
+
   <label>Major
     <input name="major" value="<%= student.major %>" />
   </label>
+
   <label>GPA
     <input name="gpa" type="number" step="0.1" min="0" max="4" value="<%= student.gpa %>" />
   </label>
+
   <button type="submit">Update</button>
 </form>
+
 
