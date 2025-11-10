@@ -6,15 +6,17 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <header>
-    <h1>Student Records System</h1>
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f0f0f0;">
+    <h2>Student Records System</h2>
     <nav>
       <a href="/students">Students</a> |
-      <a href="/add">Add</a>
+      <a href="/add">Add</a> |
+      <% if (session && session.user) { %>
+        <span>Welcome, <%= session.user %>!</span>
+        <a href="/logout" style="margin-left: 10px; color: red;">Logout</a>
+      <% } %>
     </nav>
-    <hr />
   </header>
-
   <main>
     <%- include(partial) %>
   </main>
