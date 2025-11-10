@@ -1,6 +1,4 @@
-// ======================
 // Import required modules
-// ======================
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -12,25 +10,20 @@ const Student = require('./models/student');
 
 dotenv.config();
 
-// ======================
 // Initialize the app
-// ======================
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
-// ======================
+
 // Middleware settings
-// ======================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// ======================
 // Session configuration
-// ======================
 const isProd = process.env.NODE_ENV === 'production';
 app.use(
   session({
@@ -45,29 +38,24 @@ app.use(
   })
 );
 
-// ✅ 让 EJS 模板可以直接访问 session + 提示消息
 app.use((req, res, next) => {
   res.locals.session = req.session;
   res.locals.message = req.session.message || null;
-  delete req.session.message; // 显示一次后清空
+  delete req.session.message;
   next();
 });
 
-// ======================
 // MongoDB connection
-// ======================
 const mongoURI =
   process.env.MONGODB_URI ||
   'mongodb+srv://admin:password112@cluster0.9ya5ucp.mongodb.net/studentDB?retryWrites=true&w=majority';
 
 mongoose
   .connect(mongoURI)
-  .then(() => console.log('✅ MongoDB connected successfully'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
-// ======================
 // Google OAuth Configuration
-// ======================
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -87,17 +75,13 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
-// ======================
 // Admin Account
-// ======================
 const adminUser = {
   username: 'admin',
   password: '123456',
 };
 
-// ======================
 // Login / Logout routes
-// ======================
 app.get('/login', (req, res) => {
   res.render('login', { error: null, message: res.locals.message });
 });
@@ -112,10 +96,8 @@ app.post('/login', (req, res) => {
   }
 });
 
-// ✅ Google 登录入口
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// ✅ Google 登录回调
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
@@ -125,7 +107,7 @@ app.get(
   }
 );
 
-// ✅ Logout
+// Logout
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');
@@ -141,14 +123,10 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// ======================
 // Basic route
-// ======================
 app.get('/', (req, res) => res.redirect('/login'));
 
-// ======================
 // CRUD Web Routes
-// ======================
 app.get('/students', requireLogin, async (req, res) => {
   const raw = (req.query.name || '').trim();
   let students = [];
@@ -241,9 +219,7 @@ app.get('/delete/:id', requireLogin, async (req, res) => {
   res.redirect('/students');
 });
 
-// ======================
 // RESTful API
-// ======================
 app.get('/api/students', async (req, res) => {
   const students = await Student.find();
   res.json(students);
@@ -275,10 +251,8 @@ app.delete('/api/students/:id', async (req, res) => {
   res.json({ message: 'Deleted successfully' });
 });
 
-// ======================
 // Start the server
-// ======================
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running at http://localhost:${PORT}`);
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
 

@@ -1,57 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Admin Login</title>
-  <link rel="stylesheet" href="/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background-color: #ffffff;
+      padding: 40px 45px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      width: 360px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #222;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      color: #555;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #fffbea;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #005ecb;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px 0;
+      color: #444;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 15px;
+      transition: 0.2s;
+    }
+
+    .google-btn:hover {
+      background-color: #ebebeb;
+    }
+
+    .google-btn img {
+      width: 22px;
+      height: 22px;
+    }
+
+    .message, .error {
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .message {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
 </head>
 <body>
-  <h2 style="text-align: center;">Admin Login</h2>
-
-  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div class="login-container">
     <% if (message) { %>
-      <div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-        <%= message %>
-      </div>
+      <div class="message"><%= message %></div>
     <% } %>
 
     <% if (error) { %>
-      <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-        <%= error %>
-      </div>
+      <div class="error"><%= error %></div>
     <% } %>
 
-    <form action="/login" method="POST" style="text-align:center;">
-      <label>Username:</label><br>
-      <input type="text" name="username" required><br><br>
+    <h2>Admin Login</h2>
+    <form action="/login" method="POST">
+      <label>Username:</label>
+      <input type="text" name="username" required>
 
-      <label>Password:</label><br>
-      <input type="password" name="password" required><br><br>
+      <label>Password:</label>
+      <input type="password" name="password" required>
 
-      <button type="submit" style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-        Login
-      </button>
+      <button type="submit">Login</button>
     </form>
-    <br>
-    <!-- Google Sign-In Button -->
-<div style="text-align:center; margin-top:20px;">
-  <a href="/auth/google"
-     style="
-        display:inline-block;
-        background-color:#f5f5f5;
-        color:#444;
-        border:1px solid #ccc;
-        padding:10px 20px;
-        border-radius:5px;
-        text-decoration:none;
-        font-weight:bold;
-        font-family:Arial, sans-serif;">
-    <img src="https://developers.google.com/identity/images/g-logo.png"
-         alt="Google logo"
-         style="width:20px; vertical-align:middle; margin-right:8px;">
-    Sign in with Google
-  </a>
-</div>
+
+    <a href="/auth/google" class="google-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+      Sign in with Google
+    </a>
+  </div>
 </body>
 </html>
 
