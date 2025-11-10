@@ -15,7 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
-
 // Middleware settings
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,10 +54,7 @@ mongoose
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Google OAuth Configuration
-app.use(passport.initialize());
-app.use(passport.session());
-
+// Google OAuth Login
 passport.use(
   new GoogleStrategy(
     {
@@ -72,8 +68,16 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj));
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Admin Account
 const adminUser = {
@@ -82,10 +86,13 @@ const adminUser = {
 };
 
 // Login / Logout routes
+
+// Show login page
 app.get('/login', (req, res) => {
   res.render('login', { error: null, message: res.locals.message });
 });
 
+// Handle login form submission
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   if (username === adminUser.username && password === adminUser.password) {
@@ -96,15 +103,17 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    req.session.user = req.user.displayName || req.user.emails[0].value;
-    res.redirect('/students');
-  }
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    successRedirect: '/students',
+  })
 );
 
 // Logout
@@ -116,7 +125,7 @@ app.get('/logout', (req, res) => {
 
 // Middleware: Protect routes
 function requireLogin(req, res, next) {
-  if (!req.session.user) {
+  if (!req.session.user && !req.isAuthenticated()) {
     req.session.message = '⚠️ Please log in first.';
     return res.redirect('/login');
   }
