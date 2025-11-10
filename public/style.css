@@ -1,0 +1,12 @@
+body {font-family:Arial,sans-serif;background:#f7f9fc;color:#222;margin:0;padding:20px;}
+header h1 {margin:0;}
+nav a {margin-right:10px;}
+table {border-collapse:collapse;width:100%;background:#fff;}
+th,td {border:1px solid #ddd;padding:8px;}
+th {background:#0077cc;color:#fff;text-align:left;}
+.btn {display:inline-block;padding:6px 10px;background:#0077cc;color:#fff;text-decoration:none;border-radius:4px;}
+.danger {color:#cc0022;}
+.form {display:grid;gap:8px;max-width:360px;}
+.form label {display:flex;justify-content:space-between;gap:10px;}
+button {padding:6px 10px;}
+

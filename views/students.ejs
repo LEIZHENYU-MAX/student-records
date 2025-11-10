@@ -1,0 +1,30 @@
+
+
+<form method="GET" action="/students" style="margin:10px 0">
+  <input name="name" placeholder="Search by name" value="<%= keyword || '' %>" />
+  <button type="submit">Search</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Name</th><th>Major</th><th>GPA</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% students.forEach(s => { %>
+      <tr>
+        <td><%= s.studentID %></td>
+        <td><%= s.name %></td>
+        <td><%= s.major %></td>
+        <td><%= s.gpa %></td>
+        <td>
+          <a href="/edit/<%= s._id %>">Edit</a> |
+          <a href="/delete/<%= s._id %>" class="danger">Delete</a>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+
