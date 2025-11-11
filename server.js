@@ -25,18 +25,22 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Session configuration
 const isProd = process.env.NODE_ENV === 'production';
+app.set('trust proxy', 1);
+
 app.use(
   session({
     secret: 'secretkey123',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
+    proxy: true,
     cookie: {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: isProd ? 'none' : 'lax',
       secure: isProd,
     },
   })
 );
+
 
 // make session variables available to EJS templates
 app.use((req, res, next) => {
