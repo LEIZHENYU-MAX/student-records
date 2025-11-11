@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const Student = require('./models/student');
 
 dotenv.config();
+console.log("Loaded callback URL:", process.env.GOOGLE_CALLBACK_URL);
 
 // Initialize the app
 const app = express();
