@@ -1,4 +1,3 @@
-// Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -12,6 +11,8 @@ dotenv.config();
 console.log("Loaded callback URL:", process.env.GOOGLE_CALLBACK_URL);
 
 const app = express();
+app.enable('trust proxy');
+
 const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
@@ -22,7 +23,6 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 const isProd = process.env.NODE_ENV === 'production';
-app.set('trust proxy', 1);
 app.use(
   session({
     secret: 'secretkey123',
@@ -109,7 +109,7 @@ app.get(
 app.get(
   '/auth/google/callback',
   (req, res, next) => {
-    console.log('Callback route reached, authenticating...');
+    console.log('✅ Google callback route reached');
     next();
   },
   passport.authenticate('google', { failureRedirect: '/login' }),
@@ -272,5 +272,4 @@ app.delete('/api/students/:id', async (req, res) => {
 app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
   console.log(`Server is running and listening on port ${process.env.PORT || 3000}`);
 });
-
 
