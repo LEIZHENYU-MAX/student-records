@@ -11,22 +11,18 @@ const Student = require('./models/student');
 dotenv.config();
 console.log("Loaded callback URL:", process.env.GOOGLE_CALLBACK_URL);
 
-// Initialize the app
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 
-// Middleware settings
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Session configuration
 const isProd = process.env.NODE_ENV === 'production';
 app.set('trust proxy', 1);
-
 app.use(
   session({
     secret: 'secretkey123',
@@ -41,8 +37,6 @@ app.use(
   })
 );
 
-
-// make session variables available to EJS templates
 app.use((req, res, next) => {
   res.locals.session = req.session;
   res.locals.message = req.session.message || null;
@@ -50,7 +44,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// MongoDB connection
 const mongoURI =
   process.env.MONGODB_URI ||
   'mongodb+srv://admin:password112@cluster0.9ya5ucp.mongodb.net/studentDB?retryWrites=true&w=majority';
@@ -60,7 +53,6 @@ mongoose
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Google OAuth Login
 passport.use(
   new GoogleStrategy(
     {
@@ -69,6 +61,7 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     (accessToken, refreshToken, profile, done) => {
+      console.log('Google profile received:', profile.displayName);
       return done(null, profile);
     }
   )
@@ -85,20 +78,15 @@ passport.deserializeUser((obj, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Admin Account
 const adminUser = {
   username: 'admin',
   password: '123456',
 };
 
-// Login / Logout routes
-
-// show login page
 app.get('/login', (req, res) => {
   res.render('login', { error: null, message: res.locals.message });
 });
 
-// handle local login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   if (username === adminUser.username && password === adminUser.password) {
@@ -109,27 +97,45 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Google login entry
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get(
+  '/auth/google',
+  (req, res, next) => {
+    console.log('Redirecting to Google login...');
+    next();
+  },
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
-// Google login callback and save username to session
 app.get(
   '/auth/google/callback',
+  (req, res, next) => {
+    console.log('Callback route reached, authenticating...');
+    next();
+  },
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    req.session.user = req.user.displayName || 'Google User';
-    res.redirect('/students');
+    if (req.user) {
+      console.log('Authenticated as:', req.user.displayName);
+      req.session.user = req.user.displayName || 'Google User';
+      res.redirect('/students');
+    } else {
+      console.log('No user info found, redirecting to login');
+      res.redirect('/login');
+    }
   }
 );
 
-// logout
+app.get('/auth/google/*', (req, res) => {
+  console.log('Fallback triggered: route not matched, redirecting to /login');
+  res.redirect('/login');
+});
+
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');
   });
 });
 
-// Middleware: protect routes
 function requireLogin(req, res, next) {
   if (!req.session.user && !req.isAuthenticated()) {
     req.session.message = 'Please log in first.';
@@ -138,10 +144,8 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// Basic route
 app.get('/', (req, res) => res.redirect('/login'));
 
-// CRUD Web Routes
 app.get('/students', requireLogin, async (req, res) => {
   const raw = (req.query.name || '').trim();
   let students = [];
@@ -234,7 +238,6 @@ app.get('/delete/:id', requireLogin, async (req, res) => {
   res.redirect('/students');
 });
 
-// RESTful API
 app.get('/api/students', async (req, res) => {
   const students = await Student.find();
   res.json(students);
@@ -266,7 +269,6 @@ app.delete('/api/students/:id', async (req, res) => {
   res.json({ message: 'Deleted successfully' });
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log('Server is running at http://localhost:' + PORT);
 });
