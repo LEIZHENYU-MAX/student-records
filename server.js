@@ -37,6 +37,7 @@ app.use(
   })
 );
 
+// make session variables available to EJS templates
 app.use((req, res, next) => {
   res.locals.session = req.session;
   res.locals.message = req.session.message || null;
@@ -87,12 +88,12 @@ const adminUser = {
 
 // Login / Logout routes
 
-// Show login page
+// show login page
 app.get('/login', (req, res) => {
   res.render('login', { error: null, message: res.locals.message });
 });
 
-// Handle login form submission
+// handle local login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   if (username === adminUser.username && password === adminUser.password) {
@@ -103,30 +104,30 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+// Google login entry
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
+// Google login callback and save username to session
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login',
-    successRedirect: '/students',
-  })
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    req.session.user = req.user.displayName || 'Google User';
+    res.redirect('/students');
+  }
 );
 
-// Logout
+// logout
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');
   });
 });
 
-// Middleware: Protect routes
+// Middleware: protect routes
 function requireLogin(req, res, next) {
   if (!req.session.user && !req.isAuthenticated()) {
-    req.session.message = '⚠️ Please log in first.';
+    req.session.message = 'Please log in first.';
     return res.redirect('/login');
   }
   next();
@@ -262,6 +263,6 @@ app.delete('/api/students/:id', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log('Server is running at http://localhost:' + PORT);
 });
 

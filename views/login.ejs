@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f9fc;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,16 +16,16 @@
 
     .login-container {
       background-color: #ffffff;
-      padding: 40px 45px;
+      padding: 45px 50px;
       border-radius: 12px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      width: 360px;
+      width: 380px;
       text-align: center;
     }
 
     h2 {
       margin-bottom: 25px;
-      color: #222;
+      color: #1565c0;
       font-size: 26px;
       font-weight: bold;
     }
@@ -34,7 +34,7 @@
       display: block;
       text-align: left;
       margin-bottom: 6px;
-      color: #555;
+      color: #444;
       font-weight: bold;
     }
 
@@ -46,13 +46,13 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 15px;
-      background-color: #fffbea;
+      background-color: #fdfdfd;
     }
 
     button[type="submit"] {
       width: 100%;
       padding: 10px;
-      background-color: #007bff;
+      background-color: #1976d2;
       color: white;
       border: none;
       border-radius: 6px;
@@ -63,20 +63,20 @@
     }
 
     button[type="submit"]:hover {
-      background-color: #005ecb;
+      background-color: #0d47a1;
     }
 
     .google-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       width: 100%;
-      background-color: #f5f5f5;
+      background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 6px;
       padding: 10px 0;
-      color: #444;
+      color: #555;
       text-decoration: none;
       font-weight: bold;
       font-size: 15px;
@@ -85,7 +85,7 @@
     }
 
     .google-btn:hover {
-      background-color: #ebebeb;
+      background-color: #f1f1f1;
     }
 
     .google-btn img {
@@ -110,6 +110,13 @@
       background-color: #f8d7da;
       color: #721c24;
     }
+
+    .divider {
+      margin: 20px 0;
+      color: #aaa;
+      font-size: 14px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +139,8 @@
 
       <button type="submit">Login</button>
     </form>
+
+    <div class="divider">or</div>
 
     <a href="/auth/google" class="google-btn">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
