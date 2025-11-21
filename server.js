@@ -109,7 +109,7 @@ app.get(
 app.get(
   '/auth/google/callback',
   (req, res, next) => {
-    console.log('✅ Google callback route reached');
+    console.log('Google callback route reached');
     next();
   },
   passport.authenticate('google', { failureRedirect: '/login' }),
