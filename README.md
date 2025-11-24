@@ -257,55 +257,26 @@ URL: DELETE /api/students/:id
 Invoke-RestMethod -Uri "https://student-records-fd69.onrender.com/api/students"
 
 
-
 **POST – Create a new student**
 
 Invoke-RestMethod -Method Post `
-
-  -Uri "https://student-records-fd69.onrender.com/api/students" `
-
-  -ContentType "application/json" `
-
-  -Body '{
-
-    "studentID": "88881234",
-
-    "name": "Rest User",
-
-    "age": 21,
-
-    "major": "IT",
-
-    "gpa": 3.1
-
-  }'
-
+-Uri "https://student-records-fd69.onrender.com/api/students" `
+-ContentType "application/json" `
+-Body '{"studentID":"88881234","name":"Rest User","age":21,"major":"IT","gpa":3.1}'
 
 
 **PUT – Update student information**
 
 Invoke-RestMethod -Method Put `
-
-  -Uri "https://student-records-fd69.onrender.com/api/students/{id}" `
-
-  -ContentType "application/json" `
-
-  -Body '{
-
-    "major": "AI",
-
-    "gpa": 4.0
-
-  }'
-
+    -Uri "https://student-records-fd69.onrender.com/api/students/6911d95daa0d9b00902dbc38" `
+    -ContentType "application/json" `
+    -Body '{ "major": "AI", "gpa": 4.0 }'
 
 
 **DELETE – Remove a student**
 
 Invoke-RestMethod -Method Delete `
-
-  -Uri "https://student-records-fd69.onrender.com/api/students/{id}"
-
+    -Uri "https://student-records-fd69.onrender.com/api/students/6911eb0216b739624a8f9a6b"
 
 
 #### \## 7. Notes
@@ -319,6 +290,7 @@ Application auto-deploys from GitHub main branch
 All cloud functions tested and verified working
 
 MongoDB Atlas database is online and connected
+
 
 
 
