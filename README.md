@@ -276,7 +276,7 @@ Invoke-RestMethod -Method Put `
 **DELETE – Remove a student**
 
 Invoke-RestMethod -Method Delete `
-    -Uri "https://student-records-fd69.onrender.com/api/students/6911eb0216b739624a8f9a6b"
+    -Uri "https://student-records-fd69.onrender.com/api/students/6925381cdb005610b8b3ebd0"
 
 
 #### \## 7. Notes
@@ -290,6 +290,7 @@ Application auto-deploys from GitHub main branch
 All cloud functions tested and verified working
 
 MongoDB Atlas database is online and connected
+
 
 
 
