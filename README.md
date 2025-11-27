@@ -250,7 +250,8 @@ URL: DELETE /api/students/:id
 
 #### \## 6. CURL Commands for Testing (Demo-Ready)
 
-
+Attention! <<_id>> You need to find the corresponding ID and then input it. For example "_id": "6911d95daa0d9b00902dbc38",then replace <<_id>> with 6911d95daa0d9b00902dbc38
+PowerShell：
 
 **GET – Retrieve all students**
 
@@ -268,7 +269,7 @@ Invoke-RestMethod -Method Post `
 **PUT – Update student information**
 
 Invoke-RestMethod -Method Put `
-    -Uri "https://student-records-fd69.onrender.com/api/students/6911d95daa0d9b00902dbc38" `
+    -Uri "https://student-records-fd69.onrender.com/api/students/<<_id>>" `
     -ContentType "application/json" `
     -Body '{ "major": "AI", "gpa": 4.0 }'
 
@@ -276,7 +277,18 @@ Invoke-RestMethod -Method Put `
 **DELETE – Remove a student**
 
 Invoke-RestMethod -Method Delete `
-    -Uri "https://student-records-fd69.onrender.com/api/students/6925381cdb005610b8b3ebd0"
+    -Uri "https://student-records-fd69.onrender.com/api/students/<<_id>>"
+
+Also can VirtualBox(The second available terminal command)：
+
+(read) curl -X GET https://student-records-fd69.onrender.com/api/students
+(create) curl -X POST https://student-records-fd69.onrender.com/api/students \
+-H "Content-Type: application/json" \
+-d '{"studentID":"88881234", "name":"Rest User", "age":21, "major":"IT", "gpa":3.1}'
+(Update) curl -X PUT https://student-records-fd69.onrender.com/api/students/<<_id>>\
+-H "Content-Type: application/json" \
+-d "{\"major\":\"AI\",\"gpa\":4.0}"
+(Delete) curl -X DELETE https://student-records-fd69.onrender.com/api/students/<<_id>>
 
 
 #### \## 7. Notes
@@ -290,6 +302,7 @@ Application auto-deploys from GitHub main branch
 All cloud functions tested and verified working
 
 MongoDB Atlas database is online and connected
+
 
 
 
